@@ -1,0 +1,1 @@
+The image takes its password from the env value `REDIS_PASSWORD`
