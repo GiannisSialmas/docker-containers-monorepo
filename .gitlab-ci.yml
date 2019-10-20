@@ -11,23 +11,34 @@ before_script:
 #   - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY # This to use gitlab registry
   - echo -n $DOCKERHUB_ACCESS_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin 
 
-
-
 stages:
   - build
+
+
 
 Build Redis Env:
   stage: build
   when: manual
   variables:
-    IMAGE: redis-env-password
+    IMAGE: redis
   script:
-    # - export IMAGE=redis-env-password
     - cd $IMAGE
     - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE:latest
     - docker build -t $IMAGE_NAME .
     - docker push $IMAGE_NAME 
 
+Build Chinook Postgres:
+  stage: build
+  when: manual
+  variables:
+    IMAGE: chinook
+  script:
+    - cd postgres-chinook-populated
+    - export IMAGE_NAME=$DOCKERHUB_USERNAME/chinook:latest
+    - docker build -t $IMAGE_NAME .
+    - docker push $IMAGE_NAME 
+
+# Build Alpine Curl:
 
 
 
