@@ -9,7 +9,7 @@ before_script:
   # docker login asks for the password to be passed through stdin for security
   # we use $CI_JOB_TOKEN here which is a special token provided by GitLab
 #   - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY # This to use gitlab registry
-  - echo -n $DOCKERHUB_ACCESS_TOKEN | docker login -u gitlab-ci-token --password-stdin 
+  - echo -n $DOCKERHUB_ACCESS_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin 
 
 
 
