@@ -18,12 +18,13 @@ stages:
 
 Build Redis Env:
   stage: build
+  when: manual
   variables:
     IMAGE: redis-env-password
   script:
     # - export IMAGE=redis-env-password
     - cd $IMAGE
-    - export IMAGE_NAME=battlesable/$IMAGE:latest
+    - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE:latest
     - docker build -t $IMAGE_NAME .
     - docker push $IMAGE_NAME 
 
