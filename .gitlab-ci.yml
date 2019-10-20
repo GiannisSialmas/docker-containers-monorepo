@@ -1,0 +1,53 @@
+default:
+  image: docker:18
+
+# Use this if your GitLab runner does not use socket binding
+# services:
+#   - docker:dind
+
+before_script:
+  # docker login asks for the password to be passed through stdin for security
+  # we use $CI_JOB_TOKEN here which is a special token provided by GitLab
+#   - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY # This to use gitlab registry
+  - echo -n $DOCKERHUB_ACCESS_TOKEN | docker login -u gitlab-ci-token --password-stdin 
+
+
+
+stages:
+  - build
+
+Build Redis Env:
+  stage: build
+  variables:
+    IMAGE: redis-env-password
+  script:
+    # - export IMAGE=redis-env-password
+    - cd $IMAGE
+    - export IMAGE_NAME=battlesable/$IMAGE:latest
+    - docker build -t $IMAGE_NAME .
+    - docker push $IMAGE_NAME 
+
+
+
+
+# deploy_job:
+#   when: manual
+#   script:
+#     - make deploy
+
+
+
+# Finally, the goal here is to Docker tag any Git tag
+# GitLab will start a new pipeline everytime a Git tag is created, which is pretty awesome
+# Push tag:
+#   variables:
+#     # Again, we do not need the source code here. Just playing with Docker.
+#     GIT_STRATEGY: none
+#   stage: push
+#   only:
+#     # We want this job to be run on tags only.
+#     - tags
+#   script:
+#     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+#     - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+#     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
