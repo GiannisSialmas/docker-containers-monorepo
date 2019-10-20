@@ -1,5 +1,5 @@
 default:
-  image: docker:18
+  image: docker:19
 
 # Use this if your GitLab runner does not use socket binding
 # services:
