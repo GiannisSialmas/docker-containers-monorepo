@@ -41,8 +41,19 @@ Build Chinook Postgres:
     - docker build -t $IMAGE_NAME .
     - docker push $IMAGE_NAME 
 
-# Build Alpine Curl:
-
+Build Curl Alpine:
+  image: docker:19
+  services:
+    - docker:19-dind
+  stage: build
+  when: manual
+  variables:
+    IMAGE: curl
+  script:
+    - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+    - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:alpine curl-alpine
+    - docker push $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:alpine
 
 
 # deploy_job:
