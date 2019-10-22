@@ -1,9 +1,9 @@
-default:
-  image: docker:19
+# default:
+#   image: docker:19
 
-# Use this if your GitLab runner does not use socket binding
-services:
-  - docker:19-dind
+# # Use this if your GitLab runner does not use socket binding
+# services:
+#   - docker:19-dind
 
 before_script:
   # docker login asks for the password to be passed through stdin for security
@@ -17,15 +17,18 @@ stages:
 
 
 Build Redis Env:
+  image: docker:19
+  services:
+    - docker:19-dind
   stage: build
   when: manual
   variables:
     IMAGE: redis
   script:
-    - cd $IMAGE
-    - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE:latest
-    - docker build -t $IMAGE_NAME .
-    - docker push $IMAGE_NAME 
+    - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+    - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:5-alpine-env-password redis-env-password
+    - docker push $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:5-alpine-env-password
 
 Build Chinook Postgres:
   stage: build
