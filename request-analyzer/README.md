@@ -4,21 +4,21 @@ requestAnalyzer is just a webserver that returns some info about the request. Pr
 
 ```
 {
-hostname: "second.first.battlesable.local",
-originalUrl: "/hello?name=giannis",
-forwardedFor: "X.X.X.X",
-clientIp: "Y.Y.Y.Y"
-path: "/hello",
-protocol: "http",
-query: {
-name: "giannis"
+    "hostname": "second.first.battlesable.local",
+    "originalUrl": "/hello?name=battlesable&image=request-analyzer",
+    "clientIp": "172.17.0.1",
+    "path": "/hello",
+    "protocol": "http",
+    "query": {
+        "name": "battlesable",
+        "image": "request-analyzer"
     },
-subdomains: [
+    "subdomains": [
         "first",
         "second"
     ],
-serverInterfaces: {
-eth0: "172.17.0.2"
+    "serverInterfaces": {
+        "eth0": "172.17.0.2"
     }
 }
 ```
