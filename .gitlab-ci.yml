@@ -1,0 +1,79 @@
+# default:
+#   image: docker:19
+
+# # Use this if your GitLab runner does not use socket binding
+# services:
+#   - docker:19-dind
+
+before_script:
+  # docker login asks for the password to be passed through stdin for security
+  # we use $CI_JOB_TOKEN here which is a special token provided by GitLab
+#   - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY # This to use gitlab registry
+  - echo -n $DOCKERHUB_ACCESS_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin 
+
+stages:
+  - build
+
+
+
+Build Redis Env:
+  image: docker:19
+  services:
+    - docker:19-dind
+  stage: build
+  when: manual
+  variables:
+    IMAGE: redis
+  script:
+    - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+    - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:5-alpine-env-password redis-env-password
+    - docker push $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:5-alpine-env-password
+
+Build Chinook Postgres:
+  stage: build
+  when: manual
+  variables:
+    IMAGE: chinook
+  script:
+    - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+    - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:postgres-10-alpine postgres-chinook-populated
+    - docker push $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:postgres-10-alpine
+
+Build Curl Alpine:
+  image: docker:19
+  services:
+    - docker:19-dind
+  stage: build
+  when: manual
+  variables:
+    IMAGE: curl
+  script:
+    - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+    - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:alpine curl-alpine
+    - docker push $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:alpine
+
+
+# deploy_job:
+#   when: manual
+#   script:
+#     - make deploy
+
+
+
+# Finally, the goal here is to Docker tag any Git tag
+# GitLab will start a new pipeline everytime a Git tag is created, which is pretty awesome
+# Push tag:
+#   variables:
+#     # Again, we do not need the source code here. Just playing with Docker.
+#     GIT_STRATEGY: none
+#   stage: push
+#   only:
+#     # We want this job to be run on tags only.
+#     - tags
+#   script:
+#     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+#     - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+#     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
