@@ -31,6 +31,9 @@ Build Redis Env:
     - docker push $IMAGE_NAME:5-alpine-env-password
 
 Build Chinook Postgres:
+  image: docker:19
+  services:
+    - docker:19-dind
   stage: build
   when: manual
   variables:
