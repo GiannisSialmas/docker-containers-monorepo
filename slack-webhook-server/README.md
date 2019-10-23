@@ -19,15 +19,15 @@ this.
 
 Set up the docker container
 ```bash
-docker run -p 8080:8080 -e "SLACK_WEBHOOK=https://hooks.slack.com/services/Txxxxxx/Bxxxxxx/xxxxxxxx" battlesable/slack-webhook-server"
+docker run -p 80:80 -e "SLACK_WEBHOOK=https://hooks.slack.com/services/Txxxxxx/Bxxxxxx/xxxxxxxx" battlesable/slack-webhook-server"
 ```
 
 ```bash
-curl -d '{"message":"hello world"}' -H "Content-Type: application/json" -X POST http://localhost:8080/
+curl -d '{"message":"hello world"}' -H "Content-Type: application/json" -X POST http://localhost:80/
 ```
 
 
-The server binds to port 8080 by default if not specified otherwise by the `PORT` env variable
+The server binds to port 80 by default if not specified otherwise by the `PORT` env variable
 
 ## Environment Variables
 
