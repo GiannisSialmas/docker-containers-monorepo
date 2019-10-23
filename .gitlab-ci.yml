@@ -36,10 +36,10 @@ Build Chinook Postgres:
   variables:
     IMAGE: chinook
   script:
-    - cd postgres-chinook-populated
-    - export IMAGE_NAME=$DOCKERHUB_USERNAME/chinook:latest
-    - docker build -t $IMAGE_NAME .
-    - docker push $IMAGE_NAME 
+    - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+    - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:postgres-10-alpine postgres-chinook-populated
+    - docker push $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:postgres-10-alpine
 
 Build Curl Alpine:
   image: docker:19
