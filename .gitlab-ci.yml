@@ -34,7 +34,8 @@ Chinook Postgres:
   image: docker:19
   services:
     - docker:19-dind
-  stage:   when: manual
+  stage: build
+  when: manual
   variables:
     IMAGE: chinook
   script:
