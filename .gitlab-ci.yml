@@ -16,7 +16,7 @@ stages:
 
 
 
-Build Redis Env:
+Redis Env:
   image: docker:19
   services:
     - docker:19-dind
@@ -30,12 +30,11 @@ Build Redis Env:
     - docker push $IMAGE_NAME:latest
     - docker push $IMAGE_NAME:5-alpine-env-password
 
-Build Chinook Postgres:
+Chinook Postgres:
   image: docker:19
   services:
     - docker:19-dind
-  stage: build
-  when: manual
+  stage:   when: manual
   variables:
     IMAGE: chinook
   script:
@@ -44,7 +43,7 @@ Build Chinook Postgres:
     - docker push $IMAGE_NAME:latest
     - docker push $IMAGE_NAME:postgres-10-alpine
 
-Build Curl Alpine:
+Curl Alpine:
   image: docker:19
   services:
     - docker:19-dind
@@ -58,6 +57,61 @@ Build Curl Alpine:
     - docker push $IMAGE_NAME:latest
     - docker push $IMAGE_NAME:alpine
 
+Slack Alpine Job:
+  image: docker:19
+  services:
+    - docker:19-dind
+  stage: build
+  when: manual
+  variables:
+    IMAGE: slack-webhook-job
+  script:
+    - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+    - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:go-1.12-alpine slack-webhook-job
+    - docker push $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:go-1.12-alpine
+
+Slack Alpine Server:
+  image: docker:19
+  services:
+    - docker:19-dind
+  stage: build
+  when: manual
+  variables:
+    IMAGE: slack-webhook-server
+  script:
+    - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+    - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:go-1.12-alpine slack-webhook-server
+    - docker push $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:go-1.12-alpine
+
+Request Analyzer:
+  image: docker:19
+  services:
+    - docker:19-dind
+  stage: build
+  when: manual
+  variables:
+    IMAGE: request-analyzer
+  script:
+    - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+    - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:node-8-alpine request-analyzer
+    - docker push $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:node-8-alpine
+
+Memory Leak:
+  image: docker:19
+  services:
+    - docker:19-dind
+  stage: build
+  when: manual
+  variables:
+    IMAGE: memory-leak
+  script:
+    - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+    - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:node-8-alpine memory-leak
+    - docker push $IMAGE_NAME:latest
+    - docker push $IMAGE_NAME:node-8-alpine
 
 # deploy_job:
 #   when: manual
