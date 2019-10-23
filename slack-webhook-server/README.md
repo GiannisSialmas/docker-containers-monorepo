@@ -17,19 +17,15 @@ this.
 
 ## Usage
 
-Running `slack-notify` in a shell prompt goes like this:
-
-```console
-$ export SLACK_WEBHOOK=https://hooks.slack.com/services/Txxxxxx/Bxxxxxx/xxxxxxxx
-$ SLACK_MESSAGE="hello" slack-notify
+Set up the docker container
+```bash
+docker run -p 8080:8080 -e "SLACK_WEBHOOK=https://hooks.slack.com/services/Txxxxxx/Bxxxxxx/xxxxxxxx" battlesable/slack-webhook-server"
 ```
 
-Running the Docker container goes like this:
-
-```console
-$ export SLACK_WEBHOOK=https://hooks.slack.com/services/Txxxxxx/Bxxxxxx/xxxxxxxx
-$ docker run -e SLACK_WEBHOOK=$SLACK_WEBHOOK -e SLACK_MESSAGE="hello" -e SLACK_CHANNEL=acid technosophos/slack-notify
+```bash
+curl -d '{"message":"hello world"}' -H "Content-Type: application/json" -X POST http://localhost:8080/
 ```
+
 
 The server binds to port 8080 by default if not specified otherwise by the `PORT` env variable
 
