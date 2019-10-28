@@ -41,7 +41,7 @@ app.all('/*', function (request, response) {
         subdomains: request.subdomains,
         serverInterfaces
     }
-
+    console.log(obj);
     response.send(obj);
 })
 
