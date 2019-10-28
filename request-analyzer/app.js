@@ -28,7 +28,7 @@ Object.keys(ifaces).forEach(function (ifname) {
 
 var server = app.listen(80, '0.0.0.0');
 
-app.get('/*', function (request, response) {
+app.all('/*', function (request, response) {
 
     const obj = {
         hostname: request.hostname,
