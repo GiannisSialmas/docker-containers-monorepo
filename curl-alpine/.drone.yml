@@ -1,0 +1,22 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: echo
+  image: busybox
+  commands:
+  - echo curl-alpine
+
+- name: slack
+  image: plugins/slack
+  settings:
+    webhook: https://hooks.slack.com/services/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
+    channel: drone-test
+    template: >
+      {{#success build.status}}
+        curl-alpine build {{build.number}} succeeded. Good job.
+      {{else}}
+        curl-alpine build {{build.number}} failed. Fix me please.
+      {{/success}}
