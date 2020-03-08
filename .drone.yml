@@ -4,6 +4,11 @@ type: docker
 name: default
 
 steps:
+- name: echo
+  image: busybox
+  commands:
+  - echo hello
+
 - name: slack
   image: plugins/slack
   settings:
