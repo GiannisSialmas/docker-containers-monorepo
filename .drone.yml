@@ -7,10 +7,16 @@ steps:
 - name: echo
   image: busybox
   commands:
-  - echo hello
+  - echo Root
 
 - name: slack
   image: plugins/slack
   settings:
     webhook: https://hooks.slack.com/services/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
     channel: drone-test
+    template: >
+      {{#success build.status}}
+        Root build {{build.number}} succeeded. Good job.
+      {{else}}
+        Root build {{build.number}} failed. Fix me please.
+      {{/success}}
