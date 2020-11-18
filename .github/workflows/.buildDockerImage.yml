@@ -33,7 +33,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/giannissialmas/docker-containers-monorepo/redis:latest
-            ghcr.io/giannissialmas/docker-containers-monorepo/${{ GITHUB_SHA }}:latest
+            ghcr.io/giannissialmas/docker-containers-monorepo/$GITHUB_SHA:latest
 
 
           
