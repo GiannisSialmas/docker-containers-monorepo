@@ -39,7 +39,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
           registry: docker.pkg.github.com
-          repository: giannissialmas/redis
+          repository: giannissialmas/docker-containers-monorepo/redis
           dockerfile: redis-env-password/Dockerfile
           path: redis-env-password
           # repository: docker.pkg.github.com/${{ github.repository_owner }}/docker-containers-monorepo/IMAGE_NAME:VERSION
