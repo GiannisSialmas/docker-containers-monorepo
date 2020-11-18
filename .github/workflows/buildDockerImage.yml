@@ -33,7 +33,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/giannissialmas/redis:latest
-            ghcr.io/giannissialmas/$GITHUB_SHA:latest
+            ghcr.io/giannissialmas/redis:$GITHUB_SHA
 
 
           
