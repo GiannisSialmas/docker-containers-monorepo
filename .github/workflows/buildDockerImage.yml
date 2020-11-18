@@ -32,8 +32,8 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
           push: true
           tags: |
-            ghcr.io/giannissialmas/docker-containers-monorepo/redis:latest
-            ghcr.io/giannissialmas/docker-containers-monorepo/$GITHUB_SHA:latest
+            ghcr.io/giannissialmas/redis:latest
+            ghcr.io/giannissialmas/$GITHUB_SHA:latest
 
 
           
