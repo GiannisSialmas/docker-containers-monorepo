@@ -1,0 +1,120 @@
+# before_script:
+#   - echo -n $DOCKERHUB_ACCESS_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin 
+
+# stages:
+#   - build
+
+jobs:
+
+  redis_env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1 
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: redis-env-password
+          file: redis-env-password/Dockerfile
+          platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
+          push: true
+          tags: |
+            ghcr.io/giannissialmas/docker-containers-monorepo/redis:latest
+            ghcr.io/giannissialmas/docker-containers-monorepo/${{ GITHUB_SHA }}:latest
+
+
+          
+# Chinook Postgres:
+#   image: docker:19
+#   services:
+#     - docker:19-dind
+#   stage: build
+#   when: manual
+#   variables:
+#     IMAGE: chinook
+#   script:
+#     - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+#     - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:postgres-10-alpine postgres-chinook-populated
+#     - docker push $IMAGE_NAME:latest
+#     - docker push $IMAGE_NAME:postgres-10-alpine
+
+# Curl Alpine:
+#   image: docker:19
+#   services:
+#     - docker:19-dind
+#   stage: build
+#   when: manual
+#   variables:
+#     IMAGE: curl
+#   script:
+#     - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+#     - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:alpine curl-alpine
+#     - docker push $IMAGE_NAME:latest
+#     - docker push $IMAGE_NAME:alpine
+
+# Slack Alpine Job:
+#   image: docker:19
+#   services:
+#     - docker:19-dind
+#   stage: build
+#   when: manual
+#   variables:
+#     IMAGE: slack-webhook-job
+#   script:
+#     - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+#     - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:go-1.12-alpine slack-webhook-job
+#     - docker push $IMAGE_NAME:latest
+#     - docker push $IMAGE_NAME:go-1.12-alpine
+
+# Slack Alpine Server:
+#   image: docker:19
+#   services:
+#     - docker:19-dind
+#   stage: build
+#   when: manual
+#   variables:
+#     IMAGE: slack-webhook-server
+#   script:
+#     - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+#     - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:go-1.12-alpine slack-webhook-server
+#     - docker push $IMAGE_NAME:latest
+#     - docker push $IMAGE_NAME:go-1.12-alpine
+
+# Request Analyzer:
+#   image: docker:19
+#   services:
+#     - docker:19-dind
+#   stage: build
+#   when: manual
+#   variables:
+#     IMAGE: request-analyzer
+#   script:
+#     - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+#     - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:node-8-alpine request-analyzer
+#     - docker push $IMAGE_NAME:latest
+#     - docker push $IMAGE_NAME:node-8-alpine
+
+# Memory Leak:
+#   image: docker:19
+#   services:
+#     - docker:19-dind
+#   stage: build
+#   when: manual
+#   variables:
+#     IMAGE: memory-leak
+#   script:
+#     - export IMAGE_NAME=$DOCKERHUB_USERNAME/$IMAGE
+#     - docker build -t $IMAGE_NAME:latest -t $IMAGE_NAME:node-8-alpine memory-leak
+#     - docker push $IMAGE_NAME:latest
+#     - docker push $IMAGE_NAME:node-8-alpine
+
