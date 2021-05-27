@@ -33,6 +33,7 @@ app.all('/*', function (request, response) {
     const obj = {
         hostname: request.hostname,
         originalUrl: request.originalUrl,
+        headers: request.headers,
         forwardedFor: request.header('x-forwarded-for'),
         clientIp: request.connection.remoteAddress,
         path: request.path,
